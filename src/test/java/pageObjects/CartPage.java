@@ -23,8 +23,6 @@ public class CartPage {
 		PageFactory.initElements(driver, this);
 	}
 
-	// ===== LOCATORS =====
-
 	By cartHeading = By.xpath("//div[@id='shopping-cart']//h1");
 
 	By productName = By.xpath("//td[@class='text-start text-wrap']//a[contains(text(),'iMac')]");
@@ -32,8 +30,6 @@ public class CartPage {
 	By removeButton = By.xpath("//a[@aria-label='Remove']");
 
 	By emptyCartMessage = By.xpath("//p[contains(text(),'Your shopping cart is empty')]");
-
-	// ===== METHODS =====
 
 	public boolean isCartPageDisplayed() {
 
