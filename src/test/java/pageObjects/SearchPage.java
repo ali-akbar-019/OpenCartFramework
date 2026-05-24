@@ -21,6 +21,25 @@ public class SearchPage {
 	@FindBy(css = "h1")
 	WebElement searchHeading;
 
+	@FindBy(xpath = "//div[@class='product-thumb']//h4/a")
+	WebElement firstProduct;
+
+	public void selectFirstProduct() {
+		try {
+			Thread.sleep(1000); // allow page render (simple fix)
+
+			((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",
+					firstProduct);
+
+			Thread.sleep(500); // small wait after scroll
+
+			firstProduct.click();
+
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public SearchPage(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
