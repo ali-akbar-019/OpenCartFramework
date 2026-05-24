@@ -1,0 +1,17 @@
+# Maven / Java build output
+target/
+
+# Test artifacts
+logs/
+reports/
+screenshots/
+test-output/
+
+# IDE metadata
+.classpath
+.project
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
