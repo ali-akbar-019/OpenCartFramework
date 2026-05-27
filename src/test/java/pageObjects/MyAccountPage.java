@@ -1,9 +1,13 @@
 package pageObjects;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MyAccountPage {
 
@@ -89,7 +93,13 @@ public class MyAccountPage {
 	}
 
 	public void clickLogout() {
-		myAccountMenu.click();
-		logoutLink.click();
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+			myAccountMenu.click();
+			wait.until(ExpectedConditions.elementToBeClickable(logoutLink));
+			((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", logoutLink);
+		} catch (Exception e) {
+			((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", logoutLink);
+		}
 	}
 }

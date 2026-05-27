@@ -45,8 +45,22 @@ public class RegisterPage {
 	@FindBy(xpath = "//h1[normalize-space()='Your Account Has Been Created!']")
 	WebElement successHeading;
 
-	@FindBy(css = "div.alert-danger")
-	WebElement warningMessage;
+	// page-level alert (privacy policy, duplicate email)
+	@FindBy(xpath = "//div[@class='alert alert-danger alert-dismissible']")
+	WebElement pageAlertDanger;
+
+	// field-level errors
+	@FindBy(id = "error-firstname")
+	WebElement firstNameError;
+
+	@FindBy(id = "error-lastname")
+	WebElement lastNameError;
+
+	@FindBy(id = "error-email")
+	WebElement emailError;
+
+	@FindBy(id = "error-password")
+	WebElement passwordError;
 
 	public RegisterPage(WebDriver driver) {
 		this.driver = driver;
@@ -86,17 +100,16 @@ public class RegisterPage {
 		confirmPasswordField.sendKeys(confirmPassword);
 	}
 
-	// ---------------- FIXED CHECKBOX (NEWSLETTER) ----------------
+	// ---------------- CHECKBOX ----------------
 
 	public void selectNewsletter(boolean subscribe) {
 		wait.until(ExpectedConditions.visibilityOf(newsletter));
-
 		if (newsletter.isSelected() != subscribe) {
 			scrollAndClick(newsletter);
 		}
 	}
 
-	// ---------------- FIXED PRIVACY POLICY (MAIN FIX) ----------------
+	// ---------------- PRIVACY POLICY ----------------
 
 	public void acceptPrivacyPolicy() {
 		wait.until(ExpectedConditions.elementToBeClickable(privacyPolicyCheckbox));
@@ -110,7 +123,7 @@ public class RegisterPage {
 		scrollAndClick(continueButton);
 	}
 
-	// ---------------- VALIDATIONS ----------------
+	// ---------------- SUCCESS VALIDATION ----------------
 
 	public boolean isRegistrationSuccessful() {
 		try {
@@ -124,22 +137,118 @@ public class RegisterPage {
 		return successHeading.getText();
 	}
 
-	public String getWarningMessage() {
-		return warningMessage.getText();
+	// ---------------- PAGE ALERT (privacy policy, duplicate email)
+	// ----------------
+
+	public boolean isPageAlertDisplayed() {
+		try {
+			return pageAlertDanger.isDisplayed();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public String getPageAlertText() {
+		try {
+			return pageAlertDanger.getText();
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
+	// ---------------- FIELD ERRORS ----------------
+
+	public String getEmailFieldValidationMessage() {
+		try {
+			wait.until(ExpectedConditions.visibilityOf(emailField));
+			return (String) ((JavascriptExecutor) driver).executeScript("return arguments[0].validationMessage;",
+					emailField);
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
+	public boolean isEmailFieldValid() {
+		try {
+			wait.until(ExpectedConditions.visibilityOf(emailField));
+			Boolean isValid = (Boolean) ((JavascriptExecutor) driver)
+					.executeScript("return arguments[0].checkValidity();", emailField);
+			return isValid;
+		} catch (Exception e) {
+			return true;
+		}
+	}
+
+// Alternative: Check if HTML5 validation is triggered
+	public boolean isHtml5ValidationTriggered() {
+		try {
+			// Check if any form field has validation message
+			Boolean hasValidation = (Boolean) ((JavascriptExecutor) driver)
+					.executeScript("return document.querySelector(':invalid') !== null;");
+			return hasValidation;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+// Or check for the browser's tooltip/popup message (more complex)
+	public boolean isBrowserShowingValidationError() {
+		try {
+			// Check if email field is marked as invalid by browser
+			String invalidClass = (String) ((JavascriptExecutor) driver)
+					.executeScript("return arguments[0].getAttribute('aria-invalid');", emailField);
+			return "true".equals(invalidClass);
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean isFirstNameErrorDisplayed() {
+		try {
+			wait.until(ExpectedConditions.visibilityOf(firstNameError));
+			return firstNameError.isDisplayed();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean isLastNameErrorDisplayed() {
+		try {
+			wait.until(ExpectedConditions.visibilityOf(lastNameError));
+			return lastNameError.isDisplayed();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean isEmailErrorDisplayed() {
+		try {
+			wait.until(ExpectedConditions.visibilityOf(emailError));
+			return emailError.isDisplayed();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean isPasswordErrorDisplayed() {
+		try {
+			wait.until(ExpectedConditions.visibilityOf(passwordError));
+			return passwordError.isDisplayed();
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	// ---------------- FULL FLOW ----------------
 
 	public void register(String firstName, String lastName, String email, String telephone, String password,
 			boolean newsletterFlag) {
-
 		enterFirstName(firstName);
 		enterLastName(lastName);
 		enterEmail(email);
 		enterTelephone(telephone);
 		enterPassword(password);
 		enterConfirmPassword(password);
-
 		selectNewsletter(newsletterFlag);
 		acceptPrivacyPolicy();
 		clickContinue();

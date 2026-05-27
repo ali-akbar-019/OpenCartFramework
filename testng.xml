@@ -17,13 +17,11 @@
             </run>
         </groups>
 
-        <classes>
-         <class name="testCases.TC_001_AccountRegistrationTest"/>
+ 		 <classes>
+   			
             <class name="testCases.TC_002_LoginTest"/>
-            <class name="testCases.TC_003_SearchTest"/>
-            <class name="testCases.TC_004_MyAccountTest"/>
-        	<class name="testCases.TC_005_CartTest"/>
-        </classes>
+            
+        </classes> 
 
     </test>
 

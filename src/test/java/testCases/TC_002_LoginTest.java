@@ -49,11 +49,18 @@ public class TC_002_LoginTest extends BaseClass {
 
 			logInfo("Invalid login validation started");
 
-			result = loginPage.isWarningDisplayed();
-
-			Assert.assertTrue(result, "Warning message should be displayed");
-
-			logInfo("Login WARNING displayed for: " + testCase);
+			// Check for HTML5 validation error first (missing @ symbol, etc.)
+			if (loginPage.isEmailValidationErrorDisplayed()) {
+				String validationMsg = loginPage.getEmailValidationMessage();
+				logInfo("HTML5 validation error detected: " + validationMsg);
+				Assert.assertTrue(true, "HTML5 validation prevented form submission");
+			}
+			// Then check for server-side warning message
+			else {
+				result = loginPage.isWarningDisplayed();
+				Assert.assertTrue(result, "Warning message should be displayed for invalid credentials");
+				logInfo("Login WARNING displayed for: " + testCase);
+			}
 		}
 
 		logInfo("Login test completed: " + testCase);

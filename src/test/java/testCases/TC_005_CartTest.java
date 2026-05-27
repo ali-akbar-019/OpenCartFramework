@@ -123,6 +123,8 @@ public class TC_005_CartTest extends BaseClass {
 
 		CartPage cartPage = new CartPage(driver);
 		cartPage.removeFromCart();
+		logInfo("URL after remove: " + driver.getCurrentUrl());
+		logInfo("Page source snippet: " + driver.getPageSource().substring(0, 500));
 		Assert.assertTrue(cartPage.isCartEmpty(), "Cart should be empty after removal");
 
 		logInfo("Remove from cart test passed");

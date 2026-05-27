@@ -36,6 +36,63 @@ public class ProductPage {
 	@FindBy(xpath = "//a[@title='Shopping Cart']")
 	WebElement viewCartLink;
 
+	// product name
+	By productHeading = By.xpath("//h1");
+	By productPrice = By.xpath("//ul[@class='list-unstyled']//li//h2");
+	By productImage = By.xpath("//img[@class='img-fluid']");
+	By quantityInput = By.id("input-quantity");
+	By reviewsTab = By.xpath("//a[contains(text(),'Reviews')]");
+	By dangerAlert = By.cssSelector(".alert-danger");
+
+	public String getProductName() {
+		WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(productHeading));
+		return el.getText();
+	}
+
+	public String getProductPrice() {
+		WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(productPrice));
+		return el.getText();
+	}
+
+	public boolean isProductImageDisplayed() {
+		WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(productImage));
+		return el.isDisplayed() && el.getAttribute("src") != null;
+	}
+
+	public boolean isAddToCartButtonDisplayed() {
+		return addToCartButton.isDisplayed() && addToCartButton.isEnabled();
+	}
+
+	public String getDefaultQuantity() {
+		WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(quantityInput));
+		return el.getAttribute("value");
+	}
+
+	public void setQuantity(String qty) {
+		WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(quantityInput));
+		el.clear();
+		el.sendKeys(qty);
+	}
+
+	public boolean isDangerAlertDisplayed() {
+		try {
+			WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(dangerAlert));
+			return el.isDisplayed();
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean isReviewTabDisplayed() {
+		WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(reviewsTab));
+		return el.isDisplayed();
+	}
+
+	public String getCartButtonText() {
+		WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(cartButton));
+		return el.getText();
+	}
+
 	public void addToCart() {
 
 		wait.until(ExpectedConditions.elementToBeClickable(addToCartButton));

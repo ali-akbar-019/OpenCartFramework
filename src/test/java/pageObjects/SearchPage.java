@@ -21,7 +21,8 @@ public class SearchPage {
 	@FindBy(css = "h1")
 	WebElement searchHeading;
 
-	@FindBy(xpath = "//div[@class='product-thumb']//h4/a")
+	@FindBy(xpath = "//div[@class='product-thumb']//div[@class='content']//h4/a")
+//	@FindBy(xpath = "//body/div[@id='container']/main/div[@id='product-search']/div[@class='row']/div[@id='content']/div[@id='product-list']/div[1]")
 	WebElement firstProduct;
 
 	public void selectFirstProduct() {

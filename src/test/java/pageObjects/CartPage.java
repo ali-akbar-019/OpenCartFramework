@@ -3,7 +3,6 @@ package pageObjects;
 import java.time.Duration;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -25,11 +24,12 @@ public class CartPage {
 
 	By cartHeading = By.xpath("//div[@id='shopping-cart']//h1");
 
-	By productName = By.xpath("//td[@class='text-start text-wrap']//a[contains(text(),'iMac')]");
+	By productName = By.xpath("//td[@class='text-start text-wrap']//a");
 
-	By removeButton = By.xpath("//a[@aria-label='Remove']");
+	By removeButton = By.xpath("//a[@title='Remove']");
+//	By removeButton = By.xpath("//td[@class='text-start text-wrap']//following-sibling::td//button[@data-bs-toggle='tooltip'][@title='Remove']");
 
-	By emptyCartMessage = By.xpath("//p[contains(text(),'Your shopping cart is empty')]");
+	By emptyCartMessage = By.xpath("//div[@id='shopping-cart']//p[contains(text(),'Your shopping cart is empty!')]");
 
 	public boolean isCartPageDisplayed() {
 
@@ -60,16 +60,13 @@ public class CartPage {
 	}
 
 	public void removeFromCart() {
-
-		WebElement removeBtn = wait.until(ExpectedConditions.elementToBeClickable(removeButton));
-
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", removeBtn);
-
-		((JavascriptExecutor) driver).executeScript("arguments[0].click();", removeBtn);
-
-		// wait until cart updates
+		WebElement removeBtn = wait.until(ExpectedConditions.presenceOfElementLocated(removeButton));
+		String href = removeBtn.getAttribute("href");
+		driver.get(href);
+		// navigate to cart page after removal
+		driver.get("http://localhost/opencart/index.php?route=checkout/cart&language=en-gb");
 		wait.until(ExpectedConditions.or(ExpectedConditions.visibilityOfElementLocated(emptyCartMessage),
-				ExpectedConditions.invisibilityOfElementLocated(productName)));
+				ExpectedConditions.presenceOfElementLocated(By.tagName("body"))));
 	}
 
 	public boolean isCartEmpty() {
