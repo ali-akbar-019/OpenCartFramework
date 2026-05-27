@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.9.8.dtd">
+
+<suite name="OpenCart - Chrome Browser Tests">
+
+    <listeners>
+        <listener class-name="utilities.ExtentReportManager"/>
+    </listeners>
+
+    <test name="Chrome - Full Regression Suite">
+        <parameter name="browser" value="chrome"/>
+        
+        <groups>
+            <run>
+                <include name="regression"/>
+            </run>
+        </groups>
+
+        <classes>
+            <class name="testCases.TC_001_AccountRegistrationTest"/>
+            <class name="testCases.TC_002_LoginTest"/>
+            <class name="testCases.TC_003_SearchTest"/>
+            <class name="testCases.TC_004_MyAccountTest"/>
+            <class name="testCases.TC_005_CartTest"/>
+            <class name="testCases.TC_006_RegisterNegativeTest"/>
+            <class name="testCases.TC_007_CheckoutTest"/>
+            <class name="testCases.TC_008_ProductPageTest"/>
+            <class name="testCases.TC_009_SearchBoundaryTest"/>
+        </classes>
+    </test>
+
+</suite>

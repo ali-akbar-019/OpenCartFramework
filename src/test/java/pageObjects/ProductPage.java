@@ -25,7 +25,7 @@ public class ProductPage {
 	@FindBy(id = "button-cart")
 	WebElement addToCartButton;
 
-	By cartButton = By.cssSelector("button.btn.dropdown-toggle");
+	By cartButton = By.xpath("//div[@id='cart']");
 
 	@FindBy(css = ".alert-success")
 	WebElement successMessage;

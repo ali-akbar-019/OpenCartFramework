@@ -22,7 +22,7 @@ public class TC_008_ProductPageTest extends BaseClass {
 		navigateToMacProduct();
 		ProductPage productPage = new ProductPage(driver);
 		String name = productPage.getProductName();
-		Assert.assertTrue(name.length() > 0, "Product name should be displayed on product page");
+		Assert.assertTrue(name != null && !name.isEmpty(), "Product name should be displayed on product page");
 		logInfo("Product name displayed: " + name);
 	}
 
@@ -32,7 +32,7 @@ public class TC_008_ProductPageTest extends BaseClass {
 		navigateToMacProduct();
 		ProductPage productPage = new ProductPage(driver);
 		String price = productPage.getProductPrice();
-		Assert.assertTrue(price.contains("$"), "Product price should contain $ symbol");
+		Assert.assertTrue(price != null && price.contains("$"), "Product price should contain $ symbol");
 		logInfo("Product price displayed: " + price);
 	}
 
@@ -69,14 +69,31 @@ public class TC_008_ProductPageTest extends BaseClass {
 		logInfo("Testing zero quantity add to cart (negative boundary)");
 		navigateToMacProduct();
 		ProductPage productPage = new ProductPage(driver);
+
+		String beforeCartText = productPage.getCartText();
 		productPage.setQuantity("0");
 		productPage.addToCart();
-		boolean warningShown = productPage.isDangerAlertDisplayed();
-		if (!warningShown) {
-			String cartText = productPage.getCartButtonText();
-			warningShown = cartText.contains("0 item") || cartText.contains("empty");
+
+		// Wait for any validation message
+		try {
+			Thread.sleep(2000);
+		} catch (Exception e) {
 		}
-		Assert.assertTrue(warningShown, "System should warn or block zero quantity add to cart");
+
+		boolean warningShown = productPage.isDangerAlertDisplayed();
+		String afterCartText = productPage.getCartText();
+
+		if (!warningShown && afterCartText.equals(beforeCartText)) {
+			logInfo("PASS: Cart unchanged for zero quantity");
+			Assert.assertTrue(true, "Zero quantity did not add to cart");
+		} else if (warningShown) {
+			logInfo("PASS: Warning displayed for zero quantity");
+			Assert.assertTrue(true, "Warning displayed for zero quantity");
+		} else {
+			logInfo("FAIL: Cart changed from '" + beforeCartText + "' to '" + afterCartText + "'");
+			Assert.fail("System should not add zero quantity to cart");
+		}
+
 		logInfo("Zero quantity boundary test handled correctly");
 	}
 
@@ -85,13 +102,33 @@ public class TC_008_ProductPageTest extends BaseClass {
 		logInfo("Testing negative quantity add to cart (negative test)");
 		navigateToMacProduct();
 		ProductPage productPage = new ProductPage(driver);
+
+		String beforeCartText = productPage.getCartText();
 		productPage.setQuantity("-1");
 		productPage.addToCart();
-		boolean warningShown = productPage.isDangerAlertDisplayed();
-		if (!warningShown) {
-			logInfo("KNOWN BUG: OpenCart accepts negative quantity without validation");
+
+		// Wait for any validation message
+		try {
+			Thread.sleep(2000);
+		} catch (Exception e) {
 		}
-		Assert.assertTrue(true, "Negative quantity behavior documented");
+
+		boolean warningShown = productPage.isDangerAlertDisplayed();
+		String afterCartText = productPage.getCartText();
+
+		if (!warningShown && afterCartText.equals(beforeCartText)) {
+			logInfo("KNOWN BUG: OpenCart accepts negative quantity without validation - Cart unchanged");
+			// Test passes but documents the bug for report
+			Assert.assertTrue(true, "Bug documented: OpenCart accepts negative quantity without validation");
+		} else if (warningShown) {
+			logInfo("PASS: System showed warning for negative quantity");
+			Assert.assertTrue(true, "Warning displayed for negative quantity");
+		} else {
+			logInfo("Cart changed from '" + beforeCartText + "' to '" + afterCartText + "'");
+			Assert.fail("Unexpected behavior: Cart changed after negative quantity");
+		}
+
+		logInfo("Negative quantity test completed");
 	}
 
 	@Test(priority = 8, groups = { "regression" })
