@@ -23,10 +23,10 @@ public class TC_007_CheckoutTest extends BaseClass {
 		loginPage.enterEmail(p.getProperty("username"));
 		loginPage.enterPassword(p.getProperty("password"));
 		loginPage.clickLogin();
-		try {
-			Thread.sleep(3000);
-		} catch (Exception e) {
-		}
+		
+		// FIXED: Replaced Thread.sleep with WebDriverWait
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.urlContains("account"));
 	}
 
 	private void addMacToCart() {
@@ -36,10 +36,12 @@ public class TC_007_CheckoutTest extends BaseClass {
 		searchPage.selectFirstProduct();
 		ProductPage productPage = new ProductPage(driver);
 		productPage.addToCart();
-		try {
-			Thread.sleep(2000);
-		} catch (Exception e) {
-		}
+		
+		// FIXED: Replaced Thread.sleep with WebDriverWait
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(
+			By.cssSelector("#cart-total"), "item"));
+		
 		productPage.clickViewCart();
 	}
 
@@ -51,6 +53,12 @@ public class TC_007_CheckoutTest extends BaseClass {
 		new SearchPage(driver).selectFirstProduct();
 		ProductPage productPage = new ProductPage(driver);
 		productPage.addToCart();
+		
+		// Wait for cart to update before clicking view cart
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.textToBePresentInElementLocated(
+			By.cssSelector("#cart-total"), "item"));
+		
 		productPage.clickViewCart();
 		CheckoutPage checkoutPage = new CheckoutPage(driver);
 		checkoutPage.clickCheckout();
@@ -67,6 +75,11 @@ public class TC_007_CheckoutTest extends BaseClass {
 		addMacToCart();
 		CheckoutPage checkoutPage = new CheckoutPage(driver);
 		checkoutPage.clickCheckout();
+		
+		// Wait for checkout page to load
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.urlContains("checkout"));
+		
 		Assert.assertTrue(checkoutPage.isCheckoutPage(), "Logged-in user should reach checkout page");
 		logInfo("Checkout page reached: " + driver.getCurrentUrl());
 	}
@@ -77,6 +90,12 @@ public class TC_007_CheckoutTest extends BaseClass {
 		loginForCheckout();
 		addMacToCart();
 		CheckoutPage checkoutPage = new CheckoutPage(driver);
+		checkoutPage.clickCheckout();
+		
+		// Wait for cart total to be visible
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".table-bordered")));
+		
 		String totalText = checkoutPage.getCartTotal();
 		Assert.assertTrue(totalText.contains("$"), "Cart total should display a dollar amount");
 		logInfo("Cart total displayed: " + totalText);
@@ -89,10 +108,12 @@ public class TC_007_CheckoutTest extends BaseClass {
 		addMacToCart();
 		CheckoutPage checkoutPage = new CheckoutPage(driver);
 		checkoutPage.updateQuantity("2");
-		try {
-			Thread.sleep(2000);
-		} catch (Exception e) {
-		}
+		
+		// FIXED: Replaced Thread.sleep with WebDriverWait
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.attributeToBe(
+			By.cssSelector(".quantity-input"), "value", "2"));
+		
 		String qty = checkoutPage.getQuantityValue();
 		Assert.assertEquals(qty, "2", "Cart quantity should be updated to 2");
 		logInfo("Cart quantity updated successfully");

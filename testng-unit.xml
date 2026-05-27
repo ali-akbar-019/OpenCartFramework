@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="OpenCart Unit Test Suite" parallel="false">
+
+    <!-- Unit tests run fast, no browser needed -->
+    <test name="Unit Tests - Business Logic Validation">
+        <classes>
+            <!-- Email validation tests -->
+            <class name="unitTests.EmailValidatorTest"/>
+            
+            <!-- Password validation tests -->
+            <class name="unitTests.PasswordValidatorTest"/>
+            
+            <!-- Product quantity boundary tests -->
+            <class name="unitTests.ProductQuantityValidatorTest"/>
+            
+            <!-- Cart total calculation tests -->
+            <class name="unitTests.CheckoutTotalCalculatorTest"/>
+        </classes>
+    </test>
+
+</suite>

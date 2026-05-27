@@ -18,7 +18,7 @@
         </groups>
 
  		 <classes>
-   			
+   			<class name="testCases.TC_001_AccountRegistrationTest"/>
             <class name="testCases.TC_002_LoginTest"/>
             
         </classes> 
