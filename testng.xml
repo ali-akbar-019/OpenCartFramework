@@ -19,7 +19,7 @@
 
  		 <classes>
    		
-            <class name="testCases.TC_010_EndToEndTest"/>
+            <class name="testCases.TC_009_SearchBoundaryTest"/>
        
            
             

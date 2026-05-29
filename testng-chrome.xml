@@ -26,6 +26,7 @@
             <class name="testCases.TC_007_CheckoutTest"/>
             <class name="testCases.TC_008_ProductPageTest"/>
             <class name="testCases.TC_009_SearchBoundaryTest"/>
+            <class name="testCases.TC_010_EndToEndTest"/>
         </classes>
     </test>
 

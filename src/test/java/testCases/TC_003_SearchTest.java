@@ -13,13 +13,20 @@ public class TC_003_SearchTest extends BaseClass {
 			"regression" }, description = "Search functionality validation (valid + invalid cases)")
 	public void searchTest(String testCase, String searchText, String expected) {
 
-		logInfo("Starting search test: " + testCase);
+		logInfo("========================================");
+		logInfo("TEST STARTED: searchTest - " + testCase);
+		logInfo("========================================");
 
+		logInfo("Test Data - Search Text: " + searchText + " | Expected: " + expected);
+
+		logInfo("STEP 1: Navigating to Home page and performing search");
 		HomePage homePage = new HomePage(driver);
 
-		logInfo("Searching for: " + searchText);
+		logInfo("Searching for: '" + searchText + "'");
 		homePage.searchFor(searchText);
+		logInfo("✓ Search submitted");
 
+		logInfo("STEP 2: Getting search results");
 		SearchPage searchPage = new SearchPage(driver);
 
 		boolean result;
@@ -27,26 +34,38 @@ public class TC_003_SearchTest extends BaseClass {
 		// VALID CASE
 		if (expected.equalsIgnoreCase("pass")) {
 
-			logInfo("Valid search validation");
+			logInfo("STEP 3: Valid search validation started");
+			logInfo("Expected: Search should return at least 1 product");
 
 			int resultCount = searchPage.getSearchResultCount();
-			logInfo("Results found: " + resultCount);
+			logInfo("✓ Results found: " + resultCount);
 
 			result = resultCount > 0;
 
 			Assert.assertTrue(result, "Expected results but found none for: " + searchText);
+			logInfo("✓ Valid search successful - Products found for: " + searchText);
+
+			logInfo("========================================");
+			logInfo("TEST PASSED: searchTest - " + testCase);
+			logInfo("Search returned " + resultCount + " result(s)");
+			logInfo("========================================");
 		}
 
 		// INVALID CASE
 		else {
 
-			logInfo("Invalid search validation");
+			logInfo("STEP 3: Invalid search validation started");
+			logInfo("Expected: 'No results' message should be displayed");
 
 			result = searchPage.isNoResultMessageDisplayed();
 
 			Assert.assertTrue(result, "Expected 'No results' message for: " + searchText);
-		}
+			logInfo("✓ 'No results' message displayed correctly for: " + searchText);
 
-		logInfo("Search test completed: " + testCase);
+			logInfo("========================================");
+			logInfo("TEST PASSED: searchTest - " + testCase);
+			logInfo("Invalid search handled correctly - No results shown");
+			logInfo("========================================");
+		}
 	}
 }

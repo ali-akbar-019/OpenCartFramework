@@ -32,159 +32,208 @@ public class TC_005_CartTest extends BaseClass {
 	@Test(priority = 1, groups = { "smoke", "regression" })
 	public void addProductToCartTest() {
 
-		logInfo("Starting Add to Cart Test");
+		logInfo("========================================");
+		logInfo("TEST STARTED: addProductToCartTest");
+		logInfo("========================================");
 
+		logInfo("STEP 1: Searching for product 'Mac'");
 		HomePage homePage = new HomePage(driver);
 		homePage.searchFor("Mac");
+		logInfo("✓ Search completed");
 
+		logInfo("STEP 2: Selecting first product from search results");
 		SearchPage searchPage = new SearchPage(driver);
 		searchPage.selectFirstProduct();
+		logInfo("✓ First product selected");
 
+		logInfo("STEP 3: Getting cart text before adding product");
 		ProductPage productPage = new ProductPage(driver);
-
-		// Get cart text before adding
 		String beforeCartText = productPage.getCartText();
 		logInfo("Cart before add: " + beforeCartText);
 
+		logInfo("STEP 4: Adding product to cart");
 		productPage.addToCart();
+		logInfo("✓ Add to Cart button clicked");
 
-		// Wait for cart text to change
+		logInfo("STEP 5: Waiting for cart to update");
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		wait.until(ExpectedConditions.not(ExpectedConditions.textToBe(By.cssSelector("#cart-total"), beforeCartText)));
+		logInfo("✓ Cart updated");
 
-		logInfo("Product added to cart");
-
-		// Verify cart shows at least 1 item
+		logInfo("STEP 6: Verifying cart shows at least 1 item");
 		String cartText = productPage.getCartText();
 		int itemCount = getCartItemCount(cartText);
 		Assert.assertTrue(itemCount >= 1, "Cart should show at least 1 item, but got: " + cartText);
 		logInfo("Cart text: " + cartText + " | Item count: " + itemCount);
 
-		logInfo("Add to cart test passed");
+		logInfo("========================================");
+		logInfo("TEST PASSED: addProductToCartTest");
+		logInfo("========================================");
 	}
 
 	@Test(priority = 2, groups = { "regression" })
 	public void addMultipleProductsToCartTest() {
 
-		logInfo("Starting Multiple Add to Cart Test");
+		logInfo("========================================");
+		logInfo("TEST STARTED: addMultipleProductsToCartTest");
+		logInfo("========================================");
 
 		HomePage homePage = new HomePage(driver);
 		ProductPage productPage = new ProductPage(driver);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		// Product 1
+		logInfo("STEP 1: Searching for first product 'Mac'");
 		homePage.searchFor("Mac");
 		SearchPage searchPage = new SearchPage(driver);
 		searchPage.selectFirstProduct();
+		logInfo("✓ First product (Mac) selected");
 
+		logInfo("STEP 2: Adding first product to cart");
 		String beforeFirstAdd = productPage.getCartText();
 		productPage.addToCart();
 		wait.until(ExpectedConditions.not(ExpectedConditions.textToBe(By.cssSelector("#cart-total"), beforeFirstAdd)));
-
-		logInfo("First product (Mac) added to cart");
+		logInfo("✓ First product (Mac) added to cart");
 
 		// Product 2
+		logInfo("STEP 3: Searching for second product 'iPhone'");
 		homePage.searchFor("iPhone");
 		searchPage.selectFirstProduct();
+		logInfo("✓ Second product (iPhone) selected");
 
+		logInfo("STEP 4: Adding second product to cart");
 		String beforeSecondAdd = productPage.getCartText();
 		productPage.addToCart();
 		wait.until(ExpectedConditions.not(ExpectedConditions.textToBe(By.cssSelector("#cart-total"), beforeSecondAdd)));
+		logInfo("✓ Second product (iPhone) added to cart");
 
-		logInfo("Second product (iPhone) added to cart");
-
-		// Verify cart shows at least 2 items
+		logInfo("STEP 5: Verifying cart shows at least 2 items");
 		String cartText = productPage.getCartText();
 		int itemCount = getCartItemCount(cartText);
 		Assert.assertTrue(itemCount >= 2,
 				"Cart should show at least 2 items after adding two products, but got: " + cartText);
 		logInfo("Cart text: " + cartText + " | Item count: " + itemCount);
 
-		logInfo("Multiple add to cart test passed");
+		logInfo("========================================");
+		logInfo("TEST PASSED: addMultipleProductsToCartTest");
+		logInfo("========================================");
 	}
 
 	@Test(priority = 3, groups = { "regression" })
 	public void addSameProductTwiceTest() {
 
-		logInfo("Starting duplicate product test");
+		logInfo("========================================");
+		logInfo("TEST STARTED: addSameProductTwiceTest");
+		logInfo("========================================");
 
+		logInfo("STEP 1: Searching for product 'Mac'");
 		HomePage homePage = new HomePage(driver);
 		homePage.searchFor("Mac");
+		logInfo("✓ Search completed");
 
+		logInfo("STEP 2: Selecting product");
 		SearchPage searchPage = new SearchPage(driver);
 		searchPage.selectFirstProduct();
+		logInfo("✓ Product selected");
 
+		logInfo("STEP 3: Adding same product to cart twice");
 		ProductPage productPage = new ProductPage(driver);
+		productPage.addToCart();
+		logInfo("✓ First add completed");
 
 		productPage.addToCart();
-		productPage.addToCart();
+		logInfo("✓ Second add completed");
 
-		logInfo("Same product added twice");
-
-		// FIXED: Strong oracle - verifies quantity handling (should be 2 or quantity
-		// increased)
+		logInfo("STEP 4: Verifying cart updated with duplicate product");
 		String cartText = productPage.getCartText();
 		int itemCount = getCartItemCount(cartText);
 		Assert.assertTrue(itemCount >= 1, "Cart should show at least 1 item (with quantity 2), but got: " + cartText);
 		logInfo("Cart text after duplicate add: " + cartText + " | Item count: " + itemCount);
 
-		logInfo("Duplicate product test passed");
+		logInfo("========================================");
+		logInfo("TEST PASSED: addSameProductTwiceTest");
+		logInfo("========================================");
 	}
 
 	@Test(priority = 4, groups = { "regression" })
 	public void viewCartPageTest() {
 
-		logInfo("Starting View Cart Test");
+		logInfo("========================================");
+		logInfo("TEST STARTED: viewCartPageTest");
+		logInfo("========================================");
 
+		logInfo("STEP 1: Searching for product 'Mac'");
 		HomePage homePage = new HomePage(driver);
 		homePage.searchFor("Mac");
+		logInfo("✓ Search completed");
 
+		logInfo("STEP 2: Selecting first product");
 		SearchPage searchPage = new SearchPage(driver);
 		searchPage.selectFirstProduct();
+		logInfo("✓ Product selected");
 
+		logInfo("STEP 3: Adding product to cart");
 		ProductPage productPage = new ProductPage(driver);
 		productPage.addToCart();
+		logInfo("✓ Product added to cart");
 
-		logInfo("Navigating to View Cart");
-
+		logInfo("STEP 4: Navigating to View Cart");
 		productPage.clickViewCart();
+		logInfo("✓ View Cart clicked");
 
+		logInfo("STEP 5: Verifying Cart page");
 		CartPage cartPage = new CartPage(driver);
-
 		Assert.assertTrue(cartPage.isCartPageDisplayed(), "Cart page should be displayed");
-		Assert.assertTrue(cartPage.isProductDisplayed(), "Product should be visible in cart");
+		logInfo("✓ Cart page displayed");
 
-		logInfo("View Cart test passed");
+		Assert.assertTrue(cartPage.isProductDisplayed(), "Product should be visible in cart");
+		logInfo("✓ Product visible in cart");
+
+		logInfo("========================================");
+		logInfo("TEST PASSED: viewCartPageTest");
+		logInfo("========================================");
 	}
 
 	@Test(priority = 5, groups = { "regression" })
 	public void removeFromCartTest() {
 
-		logInfo("Starting Remove From Cart Test");
+		logInfo("========================================");
+		logInfo("TEST STARTED: removeFromCartTest");
+		logInfo("========================================");
 
+		logInfo("STEP 1: Searching for product 'Mac'");
 		HomePage homePage = new HomePage(driver);
 		homePage.searchFor("Mac");
+		logInfo("✓ Search completed");
 
+		logInfo("STEP 2: Selecting first product");
 		SearchPage searchPage = new SearchPage(driver);
 		searchPage.selectFirstProduct();
+		logInfo("✓ Product selected");
 
+		logInfo("STEP 3: Adding product to cart");
 		ProductPage productPage = new ProductPage(driver);
 		productPage.addToCart();
+		logInfo("✓ Product added to cart");
 
-		logInfo("Opening cart and removing product");
-
+		logInfo("STEP 4: Opening cart");
 		productPage.clickViewCart();
+		logInfo("✓ Cart opened");
 
+		logInfo("STEP 5: Removing product from cart");
 		CartPage cartPage = new CartPage(driver);
 		cartPage.removeFromCart();
 		logInfo("URL after remove: " + driver.getCurrentUrl());
 
-		// FIXED: Better logging - only log page source if needed for debugging
 		String pageSource = driver.getPageSource();
 		logInfo("Page contains 'empty': " + pageSource.toLowerCase().contains("empty"));
 
+		logInfo("STEP 6: Verifying cart is empty");
 		Assert.assertTrue(cartPage.isCartEmpty(), "Cart should be empty after removal");
+		logInfo("✓ Cart is empty after removal");
 
-		logInfo("Remove from cart test passed");
+		logInfo("========================================");
+		logInfo("TEST PASSED: removeFromCartTest");
+		logInfo("========================================");
 	}
 }
