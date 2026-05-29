@@ -133,7 +133,7 @@ $(document).ready(function() {
         widgets: ['zebra']
     });
 
-    var data = {"OkPercent": 0.0, "KoPercent": 100.0};
+    var data = {"OkPercent": 99.35483870967742, "KoPercent": 0.6451612903225806};
     var dataset = [
         {
             "label" : "FAIL",
@@ -173,7 +173,7 @@ $(document).ready(function() {
     });
 
     // Creates APDEX table
-    createTable($("#apdexTable"), {"supportsControllersDiscrimination": true, "overall": {"data": [0.0, 500, 1500, "Total"], "isController": false}, "titles": ["Apdex", "T (Toleration threshold)", "F (Frustration threshold)", "Label"], "items": [{"data": [0.0, 500, 1500, "Homepage Load"], "isController": false}]}, function(index, item){
+    createTable($("#apdexTable"), {"supportsControllersDiscrimination": true, "overall": {"data": [0.4967741935483871, 500, 1500, "Total"], "isController": false}, "titles": ["Apdex", "T (Toleration threshold)", "F (Frustration threshold)", "Label"], "items": [{"data": [0.9666666666666667, 500, 1500, "Homepage Load"], "isController": false}, {"data": [0.03333333333333333, 500, 1500, "Search Mac"], "isController": false}, {"data": [0.6, 500, 1500, "Submit Login"], "isController": false}, {"data": [0.5625, 500, 1500, "Load Login Page"], "isController": false}]}, function(index, item){
         switch(index){
             case 0:
                 item = item.toFixed(3);
@@ -187,7 +187,7 @@ $(document).ready(function() {
     }, [[0, 0]], 3);
 
     // Create statistics table
-    createTable($("#statisticsTable"), {"supportsControllersDiscrimination": true, "overall": {"data": ["Total", 30, 30, 100.0, 9.299999999999999, 1, 162, 1.0, 2.0, 117.44999999999995, 162.0, 7.3493385595296425, 18.861388412542873, 0.0], "isController": false}, "titles": ["Label", "#Samples", "FAIL", "Error %", "Average", "Min", "Max", "Median", "90th pct", "95th pct", "99th pct", "Transactions/s", "Received", "Sent"], "items": [{"data": ["Homepage Load", 30, 30, 100.0, 9.299999999999999, 1, 162, 1.0, 2.0, 117.44999999999995, 162.0, 7.3493385595296425, 18.861388412542873, 0.0], "isController": false}]}, function(index, item){
+    createTable($("#statisticsTable"), {"supportsControllersDiscrimination": true, "overall": {"data": ["Total", 155, 1, 0.6451612903225806, 1344.941935483871, 188, 4606, 832.0, 3722.8, 4081.9999999999995, 4571.84, 2.1276887809029637, 63.40739116614504, 0.4687832451372016], "isController": false}, "titles": ["Label", "#Samples", "FAIL", "Error %", "Average", "Min", "Max", "Median", "90th pct", "95th pct", "99th pct", "Transactions/s", "Received", "Sent"], "items": [{"data": ["Homepage Load", 30, 0, 0.0, 324.69999999999993, 188, 549, 296.0, 477.00000000000006, 527.0, 549.0, 5.45950864422202, 181.17144847588716, 0.8548254094631483], "isController": false}, {"data": ["Search Mac", 45, 1, 2.2222222222222223, 3106.4444444444443, 1066, 4606, 3047.0, 4180.4, 4461.5999999999985, 4606.0, 3.0276525600484425, 114.44730360206553, 0.5952806465720245], "isController": false}, {"data": ["Submit Login", 40, 0, 0.0, 716.5, 345, 1087, 732.0, 961.6, 1008.6999999999998, 1087.0, 3.4605069642702655, 83.07582295181244, 1.1760316636387231], "isController": false}, {"data": ["Load Login Page", 40, 0, 0.0, 756.875, 272, 1139, 784.0, 1077.7, 1122.4499999999998, 1139.0, 3.454231433506045, 83.10226414075993, 0.6055024827288429], "isController": false}]}, function(index, item){
         switch(index){
             // Errors pct
             case 3:
@@ -217,7 +217,7 @@ $(document).ready(function() {
     }, [[0, 0]], 0, summaryTableHeader);
 
     // Create error table
-    createTable($("#errorsTable"), {"supportsControllersDiscrimination": false, "titles": ["Type of error", "Number of errors", "% in errors", "% in all samples"], "items": [{"data": ["Non HTTP response code: org.apache.http.conn.HttpHostConnectException/Non HTTP response message: Connect to localhost:80 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: connect", 30, 100.0, 100.0], "isController": false}]}, function(index, item){
+    createTable($("#errorsTable"), {"supportsControllersDiscrimination": false, "titles": ["Type of error", "Number of errors", "% in errors", "% in all samples"], "items": [{"data": ["Test failed: text expected to contain /iMac/", 1, 100.0, 0.6451612903225806], "isController": false}]}, function(index, item){
         switch(index){
             case 2:
             case 3:
@@ -228,7 +228,7 @@ $(document).ready(function() {
     }, [[1, 1]]);
 
         // Create top5 errors by sampler
-    createTable($("#top5ErrorsBySamplerTable"), {"supportsControllersDiscrimination": false, "overall": {"data": ["Total", 30, 30, "Non HTTP response code: org.apache.http.conn.HttpHostConnectException/Non HTTP response message: Connect to localhost:80 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: connect", 30, "", "", "", "", "", "", "", ""], "isController": false}, "titles": ["Sample", "#Samples", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors"], "items": [{"data": ["Homepage Load", 30, 30, "Non HTTP response code: org.apache.http.conn.HttpHostConnectException/Non HTTP response message: Connect to localhost:80 [localhost/127.0.0.1, localhost/0:0:0:0:0:0:0:1] failed: Connection refused: connect", 30, "", "", "", "", "", "", "", ""], "isController": false}]}, function(index, item){
+    createTable($("#top5ErrorsBySamplerTable"), {"supportsControllersDiscrimination": false, "overall": {"data": ["Total", 155, 1, "Test failed: text expected to contain /iMac/", 1, "", "", "", "", "", "", "", ""], "isController": false}, "titles": ["Sample", "#Samples", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors", "Error", "#Errors"], "items": [{"data": [], "isController": false}, {"data": ["Search Mac", 45, 1, "Test failed: text expected to contain /iMac/", 1, "", "", "", "", "", "", "", ""], "isController": false}, {"data": [], "isController": false}, {"data": [], "isController": false}]}, function(index, item){
         return item;
     }, [[0, 0]], 0);
 

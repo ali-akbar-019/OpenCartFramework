@@ -3,6 +3,7 @@ package pageObjects;
 import java.time.Duration;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -80,6 +81,19 @@ public class CartPage {
 		} catch (Exception e) {
 
 			return false;
+		}
+	}
+
+	public void clickCheckout() {
+		try {
+			WebElement checkoutBtn = wait
+					.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='btn btn-primary']")));
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("arguments[0].click();", checkoutBtn);
+			System.out.println("Checkout button clicked");
+		} catch (Exception e) {
+			System.out.println("Failed to click checkout button: " + e.getMessage());
+			throw e;
 		}
 	}
 }
