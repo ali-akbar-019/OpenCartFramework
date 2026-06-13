@@ -7,23 +7,30 @@
         <listener class-name="utilities.ExtentReportManager"/>
     </listeners>
 
-    <test name="OpenCart Regression Tests">
-
-        <parameter name="browser" value="chrome"/>
-
+    <test name="OpenCart Full Test Suite">
+		<parameter name="browser" value="chrome"/>
+		<parameter name="runMode" value="grid"/>
         <groups>
             <run>
                 <include name="regression"/>
+                <include name="smoke"/>
             </run>
         </groups>
 
- 		 <classes>
-   		
+        <classes>
+
+            <class name="testCases.TC_001_AccountRegistrationTest"/>
+            <class name="testCases.TC_002_LoginTest"/>
+            <class name="testCases.TC_003_SearchTest"/>
+            <class name="testCases.TC_004_MyAccountTest"/>
+            <class name="testCases.TC_005_CartTest"/>
+            <class name="testCases.TC_006_RegisterNegativeTest"/>
+            <class name="testCases.TC_007_CheckoutTest"/>
+            <class name="testCases.TC_008_ProductPageTest"/>
             <class name="testCases.TC_009_SearchBoundaryTest"/>
-       
-           
-            
-        </classes> 
+            <class name="testCases.TC_010_EndToEndTest"/>
+
+        </classes>
 
     </test>
 
