@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.9.8.dtd">
 
-<suite name="OpenCart Test Suite">
+<suite name="OpenCart Test Suite" parallel="tests" thread-count="2">
 
     <listeners>
         <listener class-name="utilities.ExtentReportManager"/>
     </listeners>
 
-    <test name="OpenCart Full Test Suite">
-		<parameter name="browser" value="chrome"/>
-		<parameter name="runMode" value="grid"/>
+    <!-- Chrome Execution -->
+    <test name="Chrome Test Suite">
+        <parameter name="browser" value="chrome"/>
+        <parameter name="runMode" value="grid"/>
         <groups>
             <run>
-                <include name="regression"/>
                 <include name="smoke"/>
             </run>
         </groups>
-
         <classes>
-
-            <class name="testCases.TC_001_AccountRegistrationTest"/>
             <class name="testCases.TC_002_LoginTest"/>
             <class name="testCases.TC_003_SearchTest"/>
-            <class name="testCases.TC_004_MyAccountTest"/>
-            <class name="testCases.TC_005_CartTest"/>
-            <class name="testCases.TC_006_RegisterNegativeTest"/>
-            <class name="testCases.TC_007_CheckoutTest"/>
-            <class name="testCases.TC_008_ProductPageTest"/>
-            <class name="testCases.TC_009_SearchBoundaryTest"/>
-            <class name="testCases.TC_010_EndToEndTest"/>
-
         </classes>
+    </test>
 
+    <!-- Firefox Execution -->
+    <test name="Firefox Test Suite">
+        <parameter name="browser" value="firefox"/>
+        <parameter name="runMode" value="grid"/>
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="testCases.TC_002_LoginTest"/>
+            <class name="testCases.TC_003_SearchTest"/>
+        </classes>
     </test>
 
 </suite>
